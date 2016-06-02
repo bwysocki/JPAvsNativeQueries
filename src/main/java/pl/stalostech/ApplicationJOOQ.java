@@ -13,21 +13,21 @@ import pl.stalostech.jpavsnative.CRUD;
 @Configuration 
 @EnableAutoConfiguration 
 @ComponentScan("pl.stalostech.*")
-public class ApplicationNative implements CommandLineRunner {
+public class ApplicationJOOQ implements CommandLineRunner {
 
 	@Autowired
-	@Qualifier("crudNative")
-	private CRUD nativeCrud;
-	
+	@Qualifier("crudJooq")
+	private CRUD jpaCrud;
+		
     public static void main(String args[]) {
-        SpringApplication.run(ApplicationNative.class, args);
+        SpringApplication.run(ApplicationJOOQ.class, args);
     }
 
     
     @Override
     public void run(String... strings) throws Exception {
 
-    	nativeCrud.createBatch();
+    	jpaCrud.createBatch(); //753
     	
     }
 }

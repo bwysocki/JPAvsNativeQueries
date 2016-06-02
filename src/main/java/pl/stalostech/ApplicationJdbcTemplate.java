@@ -13,21 +13,21 @@ import pl.stalostech.jpavsnative.CRUD;
 @Configuration 
 @EnableAutoConfiguration 
 @ComponentScan("pl.stalostech.*")
-public class ApplicationJPA implements CommandLineRunner {
+public class ApplicationJdbcTemplate implements CommandLineRunner {
 
 	@Autowired
-	@Qualifier("crudJpa")
-	private CRUD jpaCrud;
-		
+	@Qualifier("crudJdbcTemplate")
+	private CRUD nativeCrud;
+	
     public static void main(String args[]) {
-        SpringApplication.run(ApplicationJPA.class, args);
+        SpringApplication.run(ApplicationJdbcTemplate.class, args);
     }
 
     
     @Override
     public void run(String... strings) throws Exception {
 
-    	jpaCrud.createBatch(); //1076
+    	nativeCrud.createBatch(); //557ms
     	
     }
 }

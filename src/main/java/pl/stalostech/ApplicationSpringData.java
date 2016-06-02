@@ -27,7 +27,7 @@ public class ApplicationSpringData implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
 
-    	springDataCrud.createBatch();
+    	springDataCrud.createBatch(); //1137
     	
     }
 }

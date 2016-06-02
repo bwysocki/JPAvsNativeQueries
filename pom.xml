@@ -14,6 +14,7 @@
 	</parent>
 
 	<properties>
+		<start-class>pl.stalostech.ApplicationJPA</start-class>
 		<java.version>1.8</java.version>
 	</properties>
 
@@ -35,17 +36,92 @@
 			<artifactId>spring-aspects</artifactId>
 		</dependency>
 		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jooq</groupId>
+			<artifactId>jooq</artifactId>
+		</dependency>
 	</dependencies>
-
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>sql-maven-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.h2database</groupId>
+						<artifactId>h2</artifactId>
+						<version>${h2.version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<driver>org.h2.Driver</driver>
+					<url>jdbc:h2:~/fight</url>
+					<srcFiles>
+						<srcFile>${basedir}/src/main/resources/reset.sql</srcFile>
+						<srcFile>${basedir}/src/main/resources/schema.sql</srcFile>
+					</srcFiles>
+				</configuration>
+			</plugin>
+			<!-- The jOOQ code generator plugin -->
+			<plugin>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen-maven</artifactId>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+
+						<configuration>
+							<jdbc>
+								<driver>org.h2.Driver</driver>
+								<url>jdbc:h2:~/fight</url>
+							</jdbc>
+							<generator>
+								<database>
+									<name>org.jooq.util.h2.H2Database</name>
+									<includes>.*</includes>
+									<excludes></excludes>
+									<inputSchema>PUBLIC</inputSchema>
+								</database>
+								<generate>
+									<deprecated>false</deprecated>
+									<instanceFields>true</instanceFields>
+									<pojos>true</pojos>
+								</generate>
+								<target>
+									<packageName>pl.stalostech.jooq.h2</packageName>
+									<directory>${basedir}/src/main/java</directory>
+								</target>
+							</generator>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.h2database</groupId>
+						<artifactId>h2</artifactId>
+						<version>${h2.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>

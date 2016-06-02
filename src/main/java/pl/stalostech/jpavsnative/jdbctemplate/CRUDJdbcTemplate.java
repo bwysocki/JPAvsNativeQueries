@@ -1,4 +1,4 @@
-package pl.stalostech.jpavsnative.natives;
+package pl.stalostech.jpavsnative.jdbctemplate;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -15,8 +15,8 @@ import pl.stalostech.jpavsnative.CRUD;
 import pl.stalostech.model.CarType;
 import pl.stalostech.model.factory.CarTypeFactory;
 
-@Service("crudNative")
-public class CRUDNative implements CRUD {
+@Service("crudJdbcTemplate")
+public class CRUDJdbcTemplate implements CRUD {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -24,7 +24,7 @@ public class CRUDNative implements CRUD {
 	@Autowired
 	private CarTypeFactory carTypeFactory;
 
-	@LogTime("native")
+	@LogTime("jdbcTemplate")
 	public void createBatch() {
 
 		final List<CarType> carTypes = carTypeFactory.getCarTypes();
