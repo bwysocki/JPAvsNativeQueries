@@ -3,4 +3,4 @@ Comparison of 4 ways to db layer access: JPA, Spring JDBCTemplate, Spring Data, 
 
 1. Batch insert without relations - insert 10.000 records to single table (CRUD->createBatch).
 
-![alt tag](https://raw.githubusercontent.com/bwysocki/JPAvsNativeQueries/img/1.png)
+![alt tag](https://cloud.githubusercontent.com/assets/344261/15736757/41029164-28a2-11e6-980e-aed96be2fc6d.png)
