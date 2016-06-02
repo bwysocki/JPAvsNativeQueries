@@ -34,5 +34,11 @@ public class CRUDJpa implements CRUD {
 		}
 
 	}
-
+	
+	@LogTime("springData")
+	@Transactional
+	public void readWithJoins() {
+		// TODO Auto-generated method stub
+		
+	}
 }

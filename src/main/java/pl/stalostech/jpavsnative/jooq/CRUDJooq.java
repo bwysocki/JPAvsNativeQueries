@@ -40,5 +40,12 @@ public class CRUDJooq implements CRUD {
 		batch.execute();
 		
 	}
+	
+	@LogTime("springData")
+	@Transactional
+	public void readWithJoins() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

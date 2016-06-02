@@ -74,7 +74,6 @@
 					<driver>org.h2.Driver</driver>
 					<url>jdbc:h2:~/fight</url>
 					<srcFiles>
-						<srcFile>${basedir}/src/main/resources/reset.sql</srcFile>
 						<srcFile>${basedir}/src/main/resources/schema.sql</srcFile>
 					</srcFiles>
 				</configuration>

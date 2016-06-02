@@ -4,4 +4,6 @@ public interface CRUD {
 
 	public void createBatch();
 	
+	public void readWithJoins();
+	
 }

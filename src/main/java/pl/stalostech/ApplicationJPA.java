@@ -9,25 +9,30 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import pl.stalostech.jpavsnative.CRUD;
+import pl.stalostech.model.factory.CarFactory;
 
-@Configuration 
-@EnableAutoConfiguration 
+@Configuration
+@EnableAutoConfiguration
 @ComponentScan("pl.stalostech.*")
 public class ApplicationJPA implements CommandLineRunner {
 
 	@Autowired
 	@Qualifier("crudJpa")
 	private CRUD jpaCrud;
-		
-    public static void main(String args[]) {
-        SpringApplication.run(ApplicationJPA.class, args);
-    }
 
-    
-    @Override
-    public void run(String... strings) throws Exception {
+	@Autowired
+	private CarFactory carFactory;
 
-    	jpaCrud.createBatch(); //1076
-    	
-    }
+	public static void main(String args[]) {
+		SpringApplication.run(ApplicationJPA.class, args);
+	}
+
+	@Override
+	public void run(String... strings) throws Exception {
+
+		jpaCrud.createBatch(); // 1076
+
+		carFactory.prepareData(); //preapare test data
+
+	}
 }

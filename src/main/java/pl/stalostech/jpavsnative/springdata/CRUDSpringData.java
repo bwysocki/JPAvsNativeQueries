@@ -18,12 +18,18 @@ public class CRUDSpringData implements CRUD {
 	
 	@Autowired
 	private CarTypeFactory carTypeFactory;
-	
 
 	@LogTime("springData")
 	@Transactional
 	public void createBatch() {
 		repository.save(carTypeFactory.getCarTypes());
+	}
+
+	@LogTime("springData")
+	@Transactional
+	public void readWithJoins() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
