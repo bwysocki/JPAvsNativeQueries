@@ -10,13 +10,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Client {
 
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	@SequenceGenerator(name = "client_id_seq", sequenceName="client_id_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_id_seq")
+	private Integer id;
 	
 	@Column
 	private String name;
@@ -37,11 +39,11 @@ public class Client {
 		this.surname = surname;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

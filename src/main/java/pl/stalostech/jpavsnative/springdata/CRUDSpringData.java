@@ -18,7 +18,7 @@ public class CRUDSpringData implements CRUD {
 	
 	@Autowired
 	private CarTypeFactory carTypeFactory;
-
+	
 	@LogTime("springData")
 	@Transactional
 	public void createBatch() {

@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,8 @@ public class CarFactory {
 		final List<Client> clients = (List<Client>) clientFactory.getClients();
 		final List<CarType> types = (List<CarType>) repository.findAll();
 
+		
+		
 		List<Car> cars = IntStream.range(0, 30000)
 				.mapToObj(i -> new Car(factoryUtils.getRandomFromList(types), factoryUtils.randomString(),
 						factoryUtils.dateFromYear(factoryUtils.randomNumber(1990, 2016)))
@@ -56,9 +59,15 @@ public class CarFactory {
 		
 		//carRepository.save(this.getCars()); //generate sample data
 		
+		Query q = entityManager.createQuery("SELECT ct FROM CarType ct");
+		List r = q.getResultList();
+		
+		
 		for (Car car : getCars()) {
 			entityManager.persist(car);
 		}
+		
+		
 	}
 	
 }

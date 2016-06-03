@@ -10,16 +10,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class CarType {
 
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	@SequenceGenerator(name = "car_type_id_seq", sequenceName="car_type_id_seq", allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_type_id_seq")
+	private Integer id;
 	
 	@Column
-	private int doors;
+	private Integer doors;
 	
 	@Column
 	private String model;
@@ -34,26 +36,26 @@ public class CarType {
 		super();
 	}
 	
-	public CarType(int doors, String model, Date availableYear) {
+	public CarType(Integer doors, String model, Date availableYear) {
 		super();
 		this.doors = doors;
 		this.model = model;
 		this.availableYear = availableYear;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public int getDoors() {
+	public Integer getDoors() {
 		return doors;
 	}
 
-	public void setDoors(int doors) {
+	public void setDoors(Integer doors) {
 		this.doors = doors;
 	}
 

@@ -32,7 +32,7 @@ public class CRUDJdbcTemplate implements CRUD {
 
 		final List<CarType> carTypes = carTypeFactory.getCarTypes();
 
-		jdbcTemplate.batchUpdate("INSERT INTO CarType(doors, model, available_year) VALUES (?,?, ?)",
+		jdbcTemplate.batchUpdate("INSERT INTO car_type(doors, model, available_year) VALUES (?,?, ?)",
 				new BatchPreparedStatementSetter() {
 
 					@Override
@@ -53,8 +53,18 @@ public class CRUDJdbcTemplate implements CRUD {
 	
 	@LogTime("jdbcTemplate")
 	public void readWithJoins() {
+		
+		jdbcTemplate.query("SELECT * FROM car_type", new RowMapper<Car>(){
 
-		jdbcTemplate.query("SELECT * FROM CarClient", new RowMapper<Car>(){
+			@Override
+			public Car mapRow(ResultSet paramResultSet, int paramInt) throws SQLException {
+				System.out.println("bbbb");
+				return new Car();
+			}
+			
+		});
+		
+		jdbcTemplate.query("SELECT * FROM car_client", new RowMapper<Car>(){
 
 			@Override
 			public Car mapRow(ResultSet paramResultSet, int paramInt) throws SQLException {
@@ -65,9 +75,9 @@ public class CRUDJdbcTemplate implements CRUD {
 		});
 		
 		List<Car> cars = jdbcTemplate.query("SELECT c.id, c.registration_nr, c.production_year, ct.doors, ct.model, ct.available_year "
-				+ "FROM Car c "
-				+ "INNER JOIN CarType ct ON c.car_type = ct.id "
-				+ "INNER JOIN CarClient cc ON c.id = cc.car_id ", new RowMapper<Car>(){
+				+ "FROM car c "
+				+ "INNER JOIN car_type ct ON c.car_type = ct.id "
+				+ "INNER JOIN car_client cc ON c.id = cc.car_id ", new RowMapper<Car>(){
 
 			@Override
 			public Car mapRow(ResultSet rs, int nr) throws SQLException {

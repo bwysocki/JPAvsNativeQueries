@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import pl.stalostech.jpavsnative.CRUD;
+import pl.stalostech.jpavsnative.jdbctemplate.Clearer;
 
 @Configuration 
 @EnableAutoConfiguration 
@@ -19,6 +20,9 @@ public class ApplicationSpringData implements CommandLineRunner {
 	@Qualifier("crudSpringData")
 	private CRUD springDataCrud;
 	
+	@Autowired
+	private Clearer clearer;
+	
     public static void main(String args[]) {
         SpringApplication.run(ApplicationSpringData.class, args);
     }
@@ -27,7 +31,10 @@ public class ApplicationSpringData implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
 
-    	springDataCrud.createBatch(); //1137
+    	clearer.clearDB(); // clear all tables
+		
+		// postgres results : 1579+1550+1488+1745+1896 = 1651
+    	springDataCrud.createBatch();
     	
     }
 }
