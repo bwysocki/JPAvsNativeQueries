@@ -15,13 +15,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 
 @Entity
+@NamedQuery(name = "findCarsNative", query = "SELECT c FROM Car c "
+				+ "JOIN FETCH c.clients cl JOIN FETCH c.carType ct " 
+				+ "WHERE LOWER(c.registrationNr) LIKE :regNr AND cl.name LIKE :clName")
 public class Car {
 
 	@Id
-	@SequenceGenerator(name = "car_id_seq", sequenceName="car_id_seq", allocationSize=1)
+	@SequenceGenerator(name = "car_id_seq", sequenceName = "car_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_id_seq")
 	private Integer id;
 

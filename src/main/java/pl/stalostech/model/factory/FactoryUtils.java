@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,10 @@ public class FactoryUtils {
 
 	private SecureRandom random = new SecureRandom();
 
+	public Date dateFromYearRange(int startYear, int endYear) {
+		return dateFromYear(randomNumber(startYear, endYear));
+	}
+	
 	public Date dateFromYear(int year) {
 		return Date.from(Year.of(year).atDay(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 	}
@@ -31,19 +36,15 @@ public class FactoryUtils {
 	}
 
 	public <T> T getRandomFromList(List<T> list) {
-		if (list.isEmpty()) {
-			return null;
-		}
 		return list.get(ThreadLocalRandom.current().nextInt(0, list.size()));
 	}
-	
+
 	public <T> Set<T> getRandomMaxFromList(List<T> list, int max) {
-		Set<T> r = new HashSet<>();
-		
-		int limit = ThreadLocalRandom.current().nextInt(0, max + 1);
-		for (int i = 0; i < limit; i++) {
-			r.add(getRandomFromList(list));
-		}
+		final Set<T> r = new HashSet<>();
+
+		IntStream.range(0, ThreadLocalRandom.current().nextInt(0, max + 1))
+				.forEach(i -> r.add(getRandomFromList(list)));
+
 		return r;
 	}
 

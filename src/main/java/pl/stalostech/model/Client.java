@@ -26,7 +26,7 @@ public class Client {
 	@Column
 	private String surname;
 	
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "clients")
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "clients")
 	private Set<Car> cars = new HashSet<>();
 	
 	public Client() {

@@ -9,8 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import pl.stalostech.jpavsnative.CRUD;
-import pl.stalostech.jpavsnative.jdbctemplate.Clearer;
-import pl.stalostech.model.factory.CarFactory;
+import pl.stalostech.jpavsnative.jdbctemplate.Helper;
 
 @Configuration 
 @EnableAutoConfiguration 
@@ -22,10 +21,7 @@ public class ApplicationJdbcTemplate implements CommandLineRunner {
 	private CRUD nativeCrud;
 	
 	@Autowired
-	private CarFactory carFactory;
-	
-	@Autowired
-	private Clearer clearer;
+	private Helper helper;
 	
     public static void main(String args[]) {
         SpringApplication.run(ApplicationJdbcTemplate.class, args);
@@ -35,14 +31,13 @@ public class ApplicationJdbcTemplate implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
     	
-    	clearer.clearDB(); // clear all tables
+    	helper.clearDB(); // clear all tables
     	
-    	// postgres results : 1144+1173+1123+1181+1161 = 1156
-    	nativeCrud.createBatch();
+    	nativeCrud.createBatch(); // postgres results : 1144+1173+1123+1181+1161 = 1156
     	
-    	//carFactory.prepareData(); //preapare test data
+    	helper.prepareTestData();
     	
-    	//nativeCrud.readWithJoins();
+    	nativeCrud.readWithJoins(); // postgres results : 81+87+104+78+79 = 85
     	
     }
 }

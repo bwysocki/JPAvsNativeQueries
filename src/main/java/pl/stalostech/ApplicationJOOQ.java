@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import pl.stalostech.jpavsnative.CRUD;
-import pl.stalostech.jpavsnative.jdbctemplate.Clearer;
+import pl.stalostech.jpavsnative.jdbctemplate.Helper;
 
 @Configuration 
 @EnableAutoConfiguration 
@@ -18,10 +18,10 @@ public class ApplicationJOOQ implements CommandLineRunner {
 
 	@Autowired
 	@Qualifier("crudJooq")
-	private CRUD jpaCrud;
+	private CRUD jooqCrud;
 		
 	@Autowired
-	private Clearer clearer;
+	private Helper helper;
 	
     public static void main(String args[]) {
         SpringApplication.run(ApplicationJOOQ.class, args);
@@ -31,10 +31,15 @@ public class ApplicationJOOQ implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
     	
-    	clearer.clearDB(); // clear all tables
+    	helper.clearDB(); // clear all tables
 		
 		// postgres results : 1573+1506+1421+1397+1454 = 1470
-    	jpaCrud.createBatch();
+    	jooqCrud.createBatch();
+    	
+    	helper.prepareTestData();
+
+		// postgres results : 227+220+223+229+269 = 233
+    	jooqCrud.readWithJoins();
     	
     }
 }
