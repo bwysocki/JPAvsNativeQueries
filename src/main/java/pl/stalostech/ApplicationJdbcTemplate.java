@@ -8,9 +8,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import pl.stalostech.jpavsnative.CRUD;
-import pl.stalostech.jpavsnative.jdbctemplate.Clearer;
-import pl.stalostech.model.factory.CarFactory;
+import pl.stalostech.jpavsnative.Operations;
+import pl.stalostech.jpavsnative.jdbctemplate.Helper;
 
 @Configuration 
 @EnableAutoConfiguration 
@@ -18,14 +17,11 @@ import pl.stalostech.model.factory.CarFactory;
 public class ApplicationJdbcTemplate implements CommandLineRunner {
 
 	@Autowired
-	@Qualifier("crudJdbcTemplate")
-	private CRUD nativeCrud;
+	@Qualifier("jdbcTemplateOperations")
+	private Operations operations;
 	
 	@Autowired
-	private CarFactory carFactory;
-	
-	@Autowired
-	private Clearer clearer;
+	private Helper helper;
 	
     public static void main(String args[]) {
         SpringApplication.run(ApplicationJdbcTemplate.class, args);
@@ -35,14 +31,15 @@ public class ApplicationJdbcTemplate implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
     	
-    	clearer.clearDB(); // clear all tables
+    	helper.clearDB(); // clear all tables
     	
-    	// postgres results : 1144+1173+1123+1181+1161 = 1156
-    	nativeCrud.createBatch();
+    	operations.createBatch(); // postgres results : 1144+1173+1123+1181+1161 = 1156
     	
-    	//carFactory.prepareData(); //preapare test data
+    	helper.prepareTestData();
     	
-    	//nativeCrud.readWithJoins();
+    	operations.readWithJoins(); // postgres results : 81+87+104+78+79 = 85
+    	
+    	operations.readWithStoredProcedure(); // postgres results : 68+68+67+67+73 = 68
     	
     }
 }

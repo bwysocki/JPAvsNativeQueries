@@ -8,25 +8,28 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
+import pl.stalostech.model.factory.CarFactory;
+
 @Service
-public class Clearer {
+public class Helper {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-
+	
+	@Autowired
+	private CarFactory carFactory;
+	
 	public void clearDB() {
-		
 		jdbcTemplate.query("SELECT truncate_tables();", new RowMapper<Object>(){
-
 			@Override
 			public Object mapRow(ResultSet arg0, int arg1) throws SQLException {
 				return null; //just to clear db
 			}
-			
 		});
-		
 	}
 	
-
+	public void prepareTestData() {
+		carFactory.prepareData(); //preapare test data
+	}
 	
 }

@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,13 +17,42 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.ParameterMode;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.StoredProcedureParameter;
 
 @Entity
+@SqlResultSetMapping(name = "MultiJoinFnResult", classes = {
+	@ConstructorResult(targetClass = MultiJoinFnResult.class, columns = { @ColumnResult(name = "name"),
+		@ColumnResult(name = "surname"),
+		@ColumnResult(name = "carid"),
+		@ColumnResult(name = "registrationnr"),
+		@ColumnResult(name = "productionyear"),
+		@ColumnResult(name = "doors"),
+		@ColumnResult(name = "model"),
+		@ColumnResult(name = "availableyear")
+	})
+})
+@NamedQueries({ 
+	@NamedQuery(name = "findCarsNative", query = "SELECT c FROM Car c "
+		+ "JOIN FETCH c.clients cl JOIN FETCH c.carType ct "
+		+ "WHERE LOWER(c.registrationNr) LIKE :regNr AND cl.surname LIKE :clName")
+})
+@NamedStoredProcedureQuery(name = "get_testing_multijoin_data_by_regnr_and_surname", procedureName = "get_testing_multijoin_data_by_regnr_and_surname",
+	parameters = {
+		@StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "regnrparam"),
+		@StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "surnameparam")
+	},
+	resultSetMappings = {"MultiJoinFnResult"}
+)
 public class Car {
 
 	@Id
-	@SequenceGenerator(name = "car_id_seq", sequenceName="car_id_seq", allocationSize=1)
+	@SequenceGenerator(name = "car_id_seq", sequenceName = "car_id_seq", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_id_seq")
 	private Integer id;
 

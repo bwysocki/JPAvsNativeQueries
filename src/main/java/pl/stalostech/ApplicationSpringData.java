@@ -8,33 +8,40 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import pl.stalostech.jpavsnative.CRUD;
-import pl.stalostech.jpavsnative.jdbctemplate.Clearer;
+import pl.stalostech.jpavsnative.Operations;
+import pl.stalostech.jpavsnative.jdbctemplate.Helper;
 
-@Configuration 
-@EnableAutoConfiguration 
+@Configuration
+@EnableAutoConfiguration
 @ComponentScan("pl.stalostech.*")
 public class ApplicationSpringData implements CommandLineRunner {
 
 	@Autowired
-	@Qualifier("crudSpringData")
-	private CRUD springDataCrud;
-	
+	@Qualifier("springData")
+	private Operations operations;
+
 	@Autowired
-	private Clearer clearer;
-	
-    public static void main(String args[]) {
-        SpringApplication.run(ApplicationSpringData.class, args);
-    }
+	private Helper helper;
 
-    
-    @Override
-    public void run(String... strings) throws Exception {
+	public static void main(String args[]) {
+		SpringApplication.run(ApplicationSpringData.class, args);
+	}
 
-    	clearer.clearDB(); // clear all tables
-		
+	@Override
+	public void run(String... strings) throws Exception {
+
+		helper.clearDB(); // clear all tables
+
 		// postgres results : 1579+1550+1488+1745+1896 = 1651
-    	springDataCrud.createBatch();
-    	
-    }
+		operations.createBatch();
+
+		helper.prepareTestData();
+
+		// postgres results : 120+118+121+119+114 = 118
+		operations.readWithJoins();
+		
+		// postgres results : 97+97+97+91+96 = 95
+		operations.readWithStoredProcedure();
+
+	}
 }
