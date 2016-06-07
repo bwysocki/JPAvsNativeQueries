@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -19,15 +20,16 @@ import org.springframework.stereotype.Service;
 
 import ch.qos.logback.core.net.server.Client;
 import pl.stalostech.executiontime.LogTime;
-import pl.stalostech.jpavsnative.CRUD;
+import pl.stalostech.jpavsnative.Operations;
 import pl.stalostech.model.Car;
 import pl.stalostech.model.CarType;
+import pl.stalostech.model.MultiJoinFnResult;
 import pl.stalostech.model.factory.CarTypeFactory;
 
-@Service("crudJpa")
-public class CRUDJpa implements CRUD {
+@Service("jpa")
+public class JpaOperations implements Operations {
 
-	private static final Logger log = LoggerFactory.getLogger(CRUDJpa.class);
+	private static final Logger log = LoggerFactory.getLogger(JpaOperations.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -35,7 +37,7 @@ public class CRUDJpa implements CRUD {
 	@Autowired
 	private CarTypeFactory carTypeFactory;
 
-	@LogTime("crudJpa")
+	@LogTime("jpa")
 	@Transactional
 	public void createBatch() {
 
@@ -47,18 +49,35 @@ public class CRUDJpa implements CRUD {
 
 	}
 
-	@LogTime("crudJpa")
+	@LogTime("jpa")
 	@Transactional
 	public void readWithJoins() {
 		// List<Car> cars = readWithJoinsSubselects();
 		// List<Car> cars = readWithJoinsInnerJoins();
 		List<Car> cars = readWithJoinsJpql();
-		log.info("The crudJpa->readWithJoins found records : " + cars.size());
+		log.info("The jpa->readWithJoins found records : " + cars.size());
 	}
-
+	
+	@LogTime("jpa")
+	@Transactional
+	public void readWithStoredProcedure() {
+		List<MultiJoinFnResult> cars = readByStoredProcedure();
+		log.info("The jpa->readWithStoredProcedure found records : " + cars.size());
+	}
+	
 	private List<Car> readWithJoinsJpql() {
-		return entityManager.createNamedQuery("findCarsNative", Car.class).setParameter("regNr", "%146%")
-				.setParameter("clName", "%45%").getResultList();
+		return entityManager.createNamedQuery("findCarsNative", Car.class)
+				.setParameter("regNr", "%146%")
+				.setParameter("clName", "%45%")
+				.getResultList();
+	}
+	
+	private List<MultiJoinFnResult> readByStoredProcedure() {
+		StoredProcedureQuery sp =  entityManager.createNamedStoredProcedureQuery("get_testing_multijoin_data_by_regnr_and_surname");
+			
+		sp.setParameter("regnrparam", "%146%").setParameter("surnameparam", "%45%").execute();
+		
+		return sp.getResultList();
 	}
 
 	private List<Car> readWithJoinsSubselects() {
@@ -98,4 +117,5 @@ public class CRUDJpa implements CRUD {
 
 		return entityManager.createQuery(cq).getResultList();
 	}
+
 }

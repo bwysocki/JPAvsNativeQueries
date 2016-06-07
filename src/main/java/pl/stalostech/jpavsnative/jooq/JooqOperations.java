@@ -18,13 +18,13 @@ import pl.stalostech.jooq.tables.Car;
 import pl.stalostech.jooq.tables.CarClient;
 import pl.stalostech.jooq.tables.CarType;
 import pl.stalostech.jooq.tables.Client;
-import pl.stalostech.jpavsnative.CRUD;
+import pl.stalostech.jpavsnative.Operations;
 import pl.stalostech.model.factory.CarTypeFactory;
 
-@Service("crudJooq")
-public class CRUDJooq implements CRUD {
+@Service("jooq")
+public class JooqOperations implements Operations {
 	
-	private static final Logger log = LoggerFactory.getLogger(CRUDJooq.class);
+	private static final Logger log = LoggerFactory.getLogger(JooqOperations.class);
 	
 	@Autowired
 	private CarTypeFactory carTypeFactory;
@@ -61,6 +61,11 @@ public class CRUDJooq implements CRUD {
 				.fetch();
 		
 		log.info("The crudJooq->readWithJoins found records : " + cars.size());
+	}
+
+	@Override
+	public void readWithStoredProcedure() {
+		throw new UnsupportedOperationException();
 	}
 
 }

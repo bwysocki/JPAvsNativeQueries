@@ -12,3 +12,7 @@ Comparison of 4 ways communication with db layer: JPA, Spring JDBCTemplate, Spri
 - Select with many to many and many to one relations.
 
 ![alt tag](https://cloud.githubusercontent.com/assets/344261/15846955/1d56dc96-2c82-11e6-902a-478471ebea2f.png)
+
+- The same select as above but triggered as stored procedure (Postgres function). Used jooq version doesn't support stored procedures for Postgres.
+
+![alt tag](https://cloud.githubusercontent.com/assets/344261/15857249/a69502b6-2cba-11e6-9a2f-977987585850.png)

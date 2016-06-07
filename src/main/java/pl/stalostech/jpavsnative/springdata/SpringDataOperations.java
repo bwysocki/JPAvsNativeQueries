@@ -10,16 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pl.stalostech.executiontime.LogTime;
-import pl.stalostech.jpavsnative.CRUD;
+import pl.stalostech.jpavsnative.Operations;
 import pl.stalostech.jpavsnative.springdata.repository.CarRepository;
 import pl.stalostech.jpavsnative.springdata.repository.CarTypeRepository;
 import pl.stalostech.model.Car;
+import pl.stalostech.model.MultiJoinFnResult;
 import pl.stalostech.model.factory.CarTypeFactory;
 
-@Service("crudSpringData")
-public class CRUDSpringData implements CRUD {
+@Service("springData")
+public class SpringDataOperations implements Operations {
 
-	private static final Logger log = LoggerFactory.getLogger(CRUDSpringData.class);
+	private static final Logger log = LoggerFactory.getLogger(SpringDataOperations.class);
 
 	@Autowired
 	private CarTypeRepository carTypeRepo;
@@ -40,7 +41,14 @@ public class CRUDSpringData implements CRUD {
 	@Transactional
 	public void readWithJoins() {
 		List<Car> cars = carRepo.findCarsNative();
-		log.info("The crudJpa->readWithJoins found records : " + cars.size());
+		log.info("The springData->readWithJoins found records : " + cars.size());
+	}
+
+	@LogTime("springData")
+	@Transactional
+	public void readWithStoredProcedure() {
+		List<MultiJoinFnResult> cars = carRepo.getTestingMultijoinDataByRegnrAndSurname("%146%", "%45%");
+		log.info("The springData->readWithJoins found records : " + cars.size());
 	}
 
 }

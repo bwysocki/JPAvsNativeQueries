@@ -15,15 +15,15 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import pl.stalostech.executiontime.LogTime;
-import pl.stalostech.jpavsnative.CRUD;
+import pl.stalostech.jpavsnative.Operations;
 import pl.stalostech.model.Car;
 import pl.stalostech.model.CarType;
 import pl.stalostech.model.factory.CarTypeFactory;
 
-@Service("crudJdbcTemplate")
-public class CRUDJdbcTemplate implements CRUD {
+@Service("jdbcTemplateOperations")
+public class JdbcTemplateOperations implements Operations {
 
-	private static final Logger log = LoggerFactory.getLogger(CRUDJdbcTemplate.class);
+	private static final Logger log = LoggerFactory.getLogger(JdbcTemplateOperations.class);
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -61,7 +61,7 @@ public class CRUDJdbcTemplate implements CRUD {
 		String sql = "SELECT cl.name, cl.surname, c.id, c.registration_nr, c.production_year, ct.doors, ct.model, ct.available_year "
 				+ "FROM car c " + "INNER JOIN car_type ct ON c.car_type = ct.id "
 				+ "INNER JOIN car_client cc ON c.id = cc.car_id " + "INNER JOIN client cl ON cc.client_id = cl.id "
-				+ "WHERE LOWER(c.registration_nr) LIKE ? AND cl.name LIKE ?";
+				+ "WHERE LOWER(c.registration_nr) LIKE ? AND cl.surname LIKE ?";
 
 		Object[] params = new Object[] { new String("%146%"), new String("%45%") };
 
@@ -79,6 +79,38 @@ public class CRUDJdbcTemplate implements CRUD {
 				ct.setModel(rs.getString("model"));
 				ct.setDoors(rs.getInt("doors"));
 				ct.setAvailableYear(rs.getDate("available_year"));
+
+				car.setCarType(ct);
+
+				return car;
+			}
+
+		}, params);
+
+		log.info("The crudJdbcTemplate->readWithJoins found records : " + cars.size());
+	}
+
+	@LogTime("jdbcTemplate")
+	public void readWithStoredProcedure() {
+
+		String sql = "select * from get_testing_multijoin_data_by_regnr_and_surname(?,?)";
+
+		Object[] params = new Object[] { new String("%146%"), new String("%45%") };
+
+		List<Car> cars = jdbcTemplate.query(sql, new RowMapper<Car>() {
+
+			@Override
+			public Car mapRow(ResultSet rs, int nr) throws SQLException {
+				Car car = new Car();
+				car.setId(rs.getInt("carid"));
+				car.setRegistrationNr(rs.getString("registrationnr"));
+				car.setProductionYear(rs.getDate("productionyear"));
+
+				CarType ct = new CarType();
+				ct.setDoors(rs.getInt("doors"));
+				ct.setModel(rs.getString("model"));
+				ct.setDoors(rs.getInt("doors"));
+				ct.setAvailableYear(rs.getDate("availableyear"));
 
 				car.setCarType(ct);
 

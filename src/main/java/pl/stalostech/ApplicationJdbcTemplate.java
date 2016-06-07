@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import pl.stalostech.jpavsnative.CRUD;
+import pl.stalostech.jpavsnative.Operations;
 import pl.stalostech.jpavsnative.jdbctemplate.Helper;
 
 @Configuration 
@@ -17,8 +17,8 @@ import pl.stalostech.jpavsnative.jdbctemplate.Helper;
 public class ApplicationJdbcTemplate implements CommandLineRunner {
 
 	@Autowired
-	@Qualifier("crudJdbcTemplate")
-	private CRUD nativeCrud;
+	@Qualifier("jdbcTemplateOperations")
+	private Operations operations;
 	
 	@Autowired
 	private Helper helper;
@@ -33,11 +33,13 @@ public class ApplicationJdbcTemplate implements CommandLineRunner {
     	
     	helper.clearDB(); // clear all tables
     	
-    	nativeCrud.createBatch(); // postgres results : 1144+1173+1123+1181+1161 = 1156
+    	operations.createBatch(); // postgres results : 1144+1173+1123+1181+1161 = 1156
     	
     	helper.prepareTestData();
     	
-    	nativeCrud.readWithJoins(); // postgres results : 81+87+104+78+79 = 85
+    	operations.readWithJoins(); // postgres results : 81+87+104+78+79 = 85
+    	
+    	operations.readWithStoredProcedure(); // postgres results : 68+68+67+67+73 = 68
     	
     }
 }

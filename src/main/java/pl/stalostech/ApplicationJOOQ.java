@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import pl.stalostech.jpavsnative.CRUD;
+import pl.stalostech.jpavsnative.Operations;
 import pl.stalostech.jpavsnative.jdbctemplate.Helper;
 
 @Configuration 
@@ -17,8 +17,8 @@ import pl.stalostech.jpavsnative.jdbctemplate.Helper;
 public class ApplicationJOOQ implements CommandLineRunner {
 
 	@Autowired
-	@Qualifier("crudJooq")
-	private CRUD jooqCrud;
+	@Qualifier("jooq")
+	private Operations operations;
 		
 	@Autowired
 	private Helper helper;
@@ -34,12 +34,12 @@ public class ApplicationJOOQ implements CommandLineRunner {
     	helper.clearDB(); // clear all tables
 		
 		// postgres results : 1573+1506+1421+1397+1454 = 1470
-    	jooqCrud.createBatch();
+    	operations.createBatch();
     	
     	helper.prepareTestData();
 
 		// postgres results : 227+220+223+229+269 = 233
-    	jooqCrud.readWithJoins();
-    	
+    	operations.readWithJoins();
+
     }
 }
