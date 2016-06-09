@@ -9,6 +9,10 @@ Comparison of 4 ways communication with db layer: JPA, Spring JDBCTemplate, Spri
 
 ![alt tag](https://cloud.githubusercontent.com/assets/344261/15776275/e9ba429a-2986-11e6-8931-3d13c9b6677b.png)
 
+- Batch insert to normal nad unlogged table (JDBC)
+
+![alt tag](https://cloud.githubusercontent.com/assets/344261/15929675/ad52092e-2e4e-11e6-8ecd-c98150a8f4b5.png)
+
 - Select with many to many and many to one relations.
 
 ![alt tag](https://cloud.githubusercontent.com/assets/344261/15846955/1d56dc96-2c82-11e6-902a-478471ebea2f.png)

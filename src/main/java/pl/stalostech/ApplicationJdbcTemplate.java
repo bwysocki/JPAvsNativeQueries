@@ -35,6 +35,7 @@ public class ApplicationJdbcTemplate implements CommandLineRunner {
     	
     	operations.createBatch(); // postgres results : 1144+1173+1123+1181+1161 = 1156
     	// shared buffers : 1107+1101+1126+1092+1105 = 1106
+    	// unlogged table : 1083+1084+1089+1092+1104=1090
     	
     	helper.prepareTestData();
     	
