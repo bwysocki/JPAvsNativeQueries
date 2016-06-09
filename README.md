@@ -16,3 +16,7 @@ Comparison of 4 ways communication with db layer: JPA, Spring JDBCTemplate, Spri
 - The same select as above but triggered as stored procedure (Postgres function). Used jooq version doesn't support stored procedures for Postgres.
 
 ![alt tag](https://cloud.githubusercontent.com/assets/344261/15857249/a69502b6-2cba-11e6-9a2f-977987585850.png)
+
+- SQL operations (JDBC) on Postgres with different size of sharred_buffers settings (1024MB vs 128MB)
+
+![alt tag](https://cloud.githubusercontent.com/assets/344261/15920240/85c6cc2c-2e18-11e6-980c-a13e8aa44f1e.png)
