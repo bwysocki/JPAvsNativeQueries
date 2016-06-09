@@ -33,5 +33,5 @@ WHERE LOWER(c.registration_nr) LIKE '%25%' AND cl.surname LIKE '%23%'
 ORDER BY name;
 ```
 
-![alt tag](https://cloud.githubusercontent.com/assets/344261/15920937/57af62c6-2e1e-11e6-9ef5-0735c0bdec95.png)
+![alt tag](https://cloud.githubusercontent.com/assets/344261/15922523/650e8334-2e28-11e6-93c7-4d8a117bd2f0.png)
 
