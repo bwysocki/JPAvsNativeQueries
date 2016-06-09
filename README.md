@@ -17,6 +17,21 @@ Comparison of 4 ways communication with db layer: JPA, Spring JDBCTemplate, Spri
 
 ![alt tag](https://cloud.githubusercontent.com/assets/344261/15857249/a69502b6-2cba-11e6-9a2f-977987585850.png)
 
-- SQL operations (JDBC) on Postgres with different size of sharred_buffers settings (1024MB vs 128MB)
+- SQL operations (JDBC) on Postgres with different size of sharred_buffers parameter (1024MB vs 128MB).
 
 ![alt tag](https://cloud.githubusercontent.com/assets/344261/15920240/85c6cc2c-2e18-11e6-980c-a13e8aa44f1e.png)
+
+- SQL JOIN operation with sorting on Postgres with different size of work_mem parameter.
+
+SQL:
+```sql
+SELECT cl.name, cl.surname, c.id, c.registration_nr, c.production_year, ct.doors, ct.model, ct.available_year
+FROM jpavsnative.car c INNER JOIN jpavsnative.car_type ct ON c.car_type = ct.id
+INNER JOIN jpavsnative.car_client cc ON c.id = cc.car_id 
+INNER JOIN jpavsnative.client cl ON cc.client_id = cl.id 
+WHERE LOWER(c.registration_nr) LIKE '%25%' AND cl.surname LIKE '%23%'
+ORDER BY name;
+```
+
+![alt tag](https://cloud.githubusercontent.com/assets/344261/15920937/57af62c6-2e1e-11e6-9ef5-0735c0bdec95.png)
+
