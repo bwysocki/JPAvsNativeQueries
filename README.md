@@ -45,5 +45,5 @@ ORDER BY name;
 2. caching JPA entities with L2 and query-cache
 3. creating materialized view in postgres
 
-![alt tag](https://cloud.githubusercontent.com/assets/344261/15961503/5085f388-2f05-11e6-8383-a7cace8face7.png)
+![alt tag](https://cloud.githubusercontent.com/assets/344261/15962142/69d9114a-2f09-11e6-8d4d-16f9c78ad90a.png)
 
