@@ -41,9 +41,9 @@ ORDER BY name;
 
 - Different caching strategies : 
 
-..* caching with Spring ehcache method execution
-..* caching JPA entities with L2 and query-cache
-..* creating materialized view in postgres
+1. caching with Spring ehcache method execution
+2. caching JPA entities with L2 and query-cache
+3. creating materialized view in postgres
 
 ![alt tag](https://cloud.githubusercontent.com/assets/344261/15961503/5085f388-2f05-11e6-8383-a7cace8face7.png)
 
