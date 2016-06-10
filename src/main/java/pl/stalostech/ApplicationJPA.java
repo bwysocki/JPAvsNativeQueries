@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,6 +14,7 @@ import pl.stalostech.jpavsnative.jdbctemplate.Helper;
 
 @Configuration
 @EnableAutoConfiguration
+@EnableCaching
 @ComponentScan("pl.stalostech.*")
 public class ApplicationJPA implements CommandLineRunner {
 
@@ -46,6 +48,13 @@ public class ApplicationJPA implements CommandLineRunner {
 		
 		// postgres results : 101+92+93+105+64 = 91
 		operations.readWithStoredProcedure();
+		
+		// no cache : 393+396+259+289+306 = 328
+		// method level spring cache : 1+1+1+1+1 = 1
+		// hibernate L2 with query-cache : 55+72+61+95+68 = 70
+		// materialized view : 89+116+73+57+66 = 80
+		operations.cachedRead();
+
 
 	}
 }

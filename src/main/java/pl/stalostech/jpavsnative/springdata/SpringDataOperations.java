@@ -51,4 +51,9 @@ public class SpringDataOperations implements Operations {
 		log.info("The springData->readWithJoins found records : " + cars.size());
 	}
 
+	@Override
+	public void cachedRead() {
+		throw new UnsupportedOperationException();
+	}
+
 }

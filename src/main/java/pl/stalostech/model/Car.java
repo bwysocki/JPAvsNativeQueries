@@ -37,11 +37,10 @@ import javax.persistence.StoredProcedureParameter;
 		@ColumnResult(name = "availableyear")
 	})
 })
-@NamedQueries({ 
-	@NamedQuery(name = "findCarsNative", query = "SELECT c FROM Car c "
+@NamedQueries({ @NamedQuery(name = "findCarsNative", query = "SELECT c FROM Car c "
 		+ "JOIN FETCH c.clients cl JOIN FETCH c.carType ct "
 		+ "WHERE LOWER(c.registrationNr) LIKE :regNr AND cl.surname LIKE :clName")
-})
+}) //hints = {@QueryHint(name = "org.hibernate.cacheable", value = "true")}
 @NamedStoredProcedureQuery(name = "get_testing_multijoin_data_by_regnr_and_surname", procedureName = "get_testing_multijoin_data_by_regnr_and_surname",
 	parameters = {
 		@StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "regnrparam"),
@@ -49,6 +48,8 @@ import javax.persistence.StoredProcedureParameter;
 	},
 	resultSetMappings = {"MultiJoinFnResult"}
 )
+//@Cacheable
+//@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Car {
 
 	@Id
@@ -56,6 +57,7 @@ public class Car {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "car_id_seq")
 	private Integer id;
 
+	//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 	@ManyToOne
 	@JoinColumn(name = "car_type")
 	private CarType carType;
@@ -66,6 +68,7 @@ public class Car {
 	@Column(name = "production_year")
 	private Date productionYear;
 
+	//@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "CarClient", joinColumns = {
 			@JoinColumn(name = "car_id", nullable = true) }, inverseJoinColumns = {

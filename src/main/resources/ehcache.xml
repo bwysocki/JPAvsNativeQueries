@@ -1,0 +1,24 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.sourceforge.net/ehcache.xsd">
+    <!--
+    Mandatory Default Cache configuration. These settings will be applied to caches
+    created programmtically using CacheManager.add(String cacheName).
+    The defaultCache has an implicit name "default" which is a reserved cache name.
+    -->
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="true"
+            statistics="true"
+            overflowToDisk="false"
+            />
+
+    <cache name="pl.stalostech.jpavsnative.jpa.JpaOperations.cachedRead.cache"
+           eternal="false"
+           maxElementsInMemory="10000"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="60"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU" />
+           
+</ehcache>

@@ -122,4 +122,10 @@ public class JdbcTemplateOperations implements Operations {
 		log.info("The crudJdbcTemplate->readWithJoins found records : " + cars.size());
 	}
 
+	@Override
+	public void cachedRead() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

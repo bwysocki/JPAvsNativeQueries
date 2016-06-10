@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 
 @Entity
+//@Cacheable
+//@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Client {
 
 	@Id

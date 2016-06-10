@@ -68,4 +68,9 @@ public class JooqOperations implements Operations {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public void cachedRead() {
+		throw new UnsupportedOperationException();
+	}
+
 }

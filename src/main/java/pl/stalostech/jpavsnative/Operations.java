@@ -8,4 +8,6 @@ public interface Operations {
 	
 	public void readWithStoredProcedure();
 	
+	public void cachedRead();
+	
 }

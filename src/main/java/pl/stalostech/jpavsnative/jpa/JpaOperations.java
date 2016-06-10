@@ -23,6 +23,7 @@ import pl.stalostech.executiontime.LogTime;
 import pl.stalostech.jpavsnative.Operations;
 import pl.stalostech.model.Car;
 import pl.stalostech.model.CarType;
+import pl.stalostech.model.MatViewAsCache;
 import pl.stalostech.model.MultiJoinFnResult;
 import pl.stalostech.model.factory.CarTypeFactory;
 
@@ -33,7 +34,10 @@ public class JpaOperations implements Operations {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-
+	
+	@Autowired
+	private JpaOperationsHelper jpaHelper;
+	
 	@Autowired
 	private CarTypeFactory carTypeFactory;
 
@@ -57,7 +61,7 @@ public class JpaOperations implements Operations {
 		List<Car> cars = readWithJoinsJpql();
 		log.info("The jpa->readWithJoins found records : " + cars.size());
 	}
-	
+
 	@LogTime("jpa")
 	@Transactional
 	public void readWithStoredProcedure() {
@@ -65,18 +69,23 @@ public class JpaOperations implements Operations {
 		log.info("The jpa->readWithStoredProcedure found records : " + cars.size());
 	}
 	
-	private List<Car> readWithJoinsJpql() {
-		return entityManager.createNamedQuery("findCarsNative", Car.class)
-				.setParameter("regNr", "%146%")
-				.setParameter("clName", "%45%")
-				.getResultList();
+	@LogTime("jpa")
+	public void cachedRead() {
+		List<MatViewAsCache> cars = jpaHelper.readWithCache();
+		log.info("The jpa->cachedRead found records : " + cars.size());
 	}
 	
+	private List<Car> readWithJoinsJpql() {
+		return entityManager.createNamedQuery("findCarsNative", Car.class).setParameter("regNr", "%146%")
+				.setParameter("clName", "%45%").getResultList();
+	}
+
 	private List<MultiJoinFnResult> readByStoredProcedure() {
-		StoredProcedureQuery sp =  entityManager.createNamedStoredProcedureQuery("get_testing_multijoin_data_by_regnr_and_surname");
-			
+		StoredProcedureQuery sp = entityManager
+				.createNamedStoredProcedureQuery("get_testing_multijoin_data_by_regnr_and_surname");
+
 		sp.setParameter("regnrparam", "%146%").setParameter("surnameparam", "%45%").execute();
-		
+
 		return sp.getResultList();
 	}
 
@@ -117,5 +126,6 @@ public class JpaOperations implements Operations {
 
 		return entityManager.createQuery(cq).getResultList();
 	}
+
 
 }
