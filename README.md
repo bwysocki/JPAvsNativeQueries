@@ -47,3 +47,15 @@ ORDER BY name;
 
 ![alt tag](https://cloud.githubusercontent.com/assets/344261/15962142/69d9114a-2f09-11e6-8d4d-16f9c78ad90a.png)
 
+- Full text search
+
+```sql
+SELECT model FROM jpavsnative.car_type WHERE model @@ to_tsquery('...');
+and
+SELECT model FROM jpavsnative.car_type WHERE model ILIKE '%...%';
+```
+The search was done on table with 100.000 records with random text.
+
+![alt tag](https://cloud.githubusercontent.com/assets/344261/16039808/5aca1e44-322c-11e6-8e7b-0051708707b9.png)
+
+
