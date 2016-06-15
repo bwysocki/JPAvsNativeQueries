@@ -58,4 +58,20 @@ The search was done on table with 100.000 records with random text.
 
 ![alt tag](https://cloud.githubusercontent.com/assets/344261/16039808/5aca1e44-322c-11e6-8e7b-0051708707b9.png)
 
+- Function execution in different category
+
+```sql
+DECLARE
+ count INT = 1;
+ result BIGINT = 0;
+BEGIN
+ FOR count IN 1..nr LOOP
+  result = result + count;
+ END LOOP;
+ RETURN result;
+END;
+SELECT * FROM jpavsnative.sum_of_ints(5542455);
+```
+
+![alt tag](https://cloud.githubusercontent.com/assets/344261/16069439/c2d7b800-32ce-11e6-9431-805273534a59.png)
 
